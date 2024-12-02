@@ -1,0 +1,102 @@
+import pandas as pd
+import hazm
+from hazm.utils import stopwords_list
+import numpy as np
+import math
+
+punctuation = [".","|","؟","،","«",'»',"!","<",">",")","(",":","؛","#","$","%","^","&","*","[","]","}","{","_","-","/","+","'","۱","۲","۳","۴","۵","۶","۷","۸","۹","۰"]
+
+list_cat_1 = []
+list_cat_2 = []
+list_cat_3 = []
+list_cat_4 = []
+list_cat_5 = []
+list_cat_6 = []
+
+df_train = pd.read_csv('books_train.csv')
+df_test = pd.read_csv('books_test.csv')
+
+lemmatizer = hazm.Lemmatizer()
+normalizer = hazm.Normalizer()
+stopwords_list = hazm.stopwords_list()
+
+books_data = ['title', 'description', 'categories']
+matrix = []
+list_all_words = []
+cats = ["کلیات اسلام", "مدیریت و کسب و کار", "داستان کودک و نوجوانان", "رمان", "داستان کوتاه", "جامعه‌شناسی"]
+
+def simplify_text(string):
+    normalized_string = normalizer.normalize(string)
+    normalized_string = ''.join(char for char in normalized_string if char not in punctuation)
+    tokenized_list = hazm.word_tokenize(normalized_string)
+    lemmatized_list = (lemmatizer.lemmatize(" ".join(tokenized_list))).split(" ")
+    final_list = [word for word in lemmatized_list if word not in stopwords_list]
+    return final_list
+
+def uniqify_list(list):
+    x = np.array(list)
+    x = np.unique(x)
+    return x.tolist()
+
+def get_each_cat_words(categorie, description_list_words, title_list_words):
+    if(categorie == cats[0]):
+        list_cat_1.extend(description_list_words + title_list_words)
+    if(categorie == cats[1]): 
+        list_cat_2.extend(description_list_words + title_list_words)
+    if(categorie == cats[2]):            
+        list_cat_3.extend(description_list_words + title_list_words)
+    if(categorie == cats[3]):
+        list_cat_4.extend(description_list_words + title_list_words)
+    if(categorie == cats[4]):
+        list_cat_5.extend(description_list_words + title_list_words)
+    if(categorie == cats[5]):
+        list_cat_6.extend(description_list_words + title_list_words)
+
+def make_bag_of_words():
+    for row in range(len(df_train)):
+        description_list_words = simplify_text(df_train.loc[row]['description'])
+        title_list_words = simplify_text(df_train.loc[row]['title'])
+        get_each_cat_words(df_train.loc[row]['categories'], description_list_words, title_list_words)
+    return list_cat_1 + list_cat_2 + list_cat_3 + list_cat_4 + list_cat_5 + list_cat_6
+
+def get_list_cat_words(i):
+    if(i == 0):
+        return list_cat_1
+    if(i == 1):
+        return list_cat_2
+    if(i == 2):
+        return list_cat_3
+    if(i == 3):
+        return list_cat_4
+    if(i == 4):
+        return list_cat_5
+    if(i == 5):
+        return list_cat_6
+
+def calculate_probability_this_cat(list_cat_words, test_words):
+    final_probability = 0
+    for word in test_words:
+        if word in list_cat_words:
+            final_probability = final_probability + math.log((list_cat_words.count(word)) / len(list_cat_words))
+        else:
+            final_probability = final_probability + math.log(0.1 / len(list_cat_words))
+    return final_probability
+
+def belongs_to_which_cat(book_words):
+    probability_all_6_cat = []
+    for i in range(6):
+        final_probability = calculate_probability_this_cat(get_list_cat_words(i), book_words)
+        probability_all_6_cat.append(final_probability)
+    return probability_all_6_cat.index(max(probability_all_6_cat))
+
+list_all_words = make_bag_of_words()
+list_unique_words = uniqify_list(list_all_words)
+
+right_choose = 0
+for row in range(len(df_test)):
+    description_test_words = simplify_text(df_test.loc[row][1])
+    title_test_words = simplify_text(df_test.loc[row][0])
+    index_max_probable_cat = belongs_to_which_cat(description_test_words + title_test_words)
+    if cats[index_max_probable_cat] == df_test.loc[row][2]:
+        right_choose = right_choose + 1
+print(right_choose / len(df_test))
