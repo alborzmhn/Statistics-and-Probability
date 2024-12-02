@@ -1,5 +1,5 @@
 
-# DistributionAnalyzer
+# Distribution Analyzer
 
 ## Overview
 This project explores probability distributions, including Binomial, Poisson, and Normal distributions, through Python-based simulations and calculations. It leverages mathematical theories and programming to illustrate key statistical concepts.
