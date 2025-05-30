@@ -4,12 +4,12 @@
 ## Overview
 This project implements a **Naive Bayes classifier** to categorize books into six predefined categories based on their title and description. The categories are:
 
-1. کلیات اسلام (General Islamic Studies)
-2. مدیریت و کسب و کار (Management and Business)
-3. داستان کودک و نوجوانان (Children and Adolescent Stories)
-4. رمان (Novels)
-5. داستان کوتاه (Short Stories)
-6. جامعه‌شناسی (Sociology)
+1. General Islamic Studies
+2. Management and Business
+3. Children and Adolescent Stories
+4. Novels
+5. Short Stories
+6. Sociology
 
 The project is written in Python and leverages text preprocessing and machine learning concepts, including the Hazm library for Persian language processing.
 
@@ -106,7 +106,3 @@ The scripts print the accuracy of the classifier on the test dataset.
 
 3. **Evaluation**:
    - Use additional metrics like precision, recall, and F1-score for a more detailed evaluation.
-
----
-
-For further details, refer to the project documentation in the PDF files provided.
