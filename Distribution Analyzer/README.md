@@ -99,15 +99,3 @@ The project contains four main exercises:
 
 3. **Performance**:
    - Optimize large dataset processing to handle real-world scale data efficiently.
-
----
-
-## References
-- **Binomial, Poisson, and Normal Distributions**: Explored through mathematical formulas and computational models.
-- **Python Libraries**:
-  - `numpy`: For array manipulation and random sampling.
-  - `scipy.stats`: For statistical functions.
-  - `matplotlib.pyplot`: For plotting.
-
-For more details, refer to `CA#1.pdf` and the report `گزارش کار.pdf`.
-
