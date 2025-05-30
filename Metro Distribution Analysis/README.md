@@ -59,29 +59,3 @@ The dataset, `csv.tarbiat`, contains two columns:
 - **BRT**: The number of BRT (bus rapid transit) passes recorded at the same intervals.
 
 Each row in the dataset represents the pass counts at a specific time interval.
-
----
-
-## Libraries Used
-- **Matplotlib**: For plotting histograms and visualizations.
-- **SciPy**: For statistical analysis, including distribution fitting and plotting.
-- **NumPy**: For numerical calculations, especially for generating random samples and performing statistical operations.
-- **SymPy**: For symbolic mathematics and solving equations (especially in Task 6 and Task 7).
-
----
-
-## Code Explanation
-
-### Task 1 (`Q1.py`) - **Histogram Plotting**
-```python
-# The code generates a histogram to visualize the distribution of passes for both Metro and BRT.
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Function to generate samples from a binomial distribution
-def sampleBin(m, n, probability):
-    matrix = random.choice([0, 1], p = [1 - probability, probability], size = (m, n))
-    return np.sum(matrix, axis=1)
-
-# Generate and plot histograms for metro and BRT data
-# The histogram is used to understand the frequency distribution of the data
